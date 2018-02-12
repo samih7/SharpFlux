@@ -1,0 +1,38 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2017
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{711701E4-E2BD-4771-9E8C-8E0943BF3756}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xamarin-forms-sample", "xamarin-forms-sample", "{89BF7302-F179-4A46-BCB4-E65C9985EFFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp", "SharpFlux\TodoApp\TodoApp.csproj", "{80C29B1F-F113-41FC-907D-CE65A1E2BA41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Android", "SharpFlux\TodoApp.Android\TodoApp.Android.csproj", "{1AF86B23-8763-4897-9B9F-B1E424888239}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpFlux", "SharpFlux\SharpFlux\SharpFlux.csproj", "{AFB87377-C560-4448-8B4A-0D018A90B68B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80C29B1F-F113-41FC-907D-CE65A1E2BA41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80C29B1F-F113-41FC-907D-CE65A1E2BA41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80C29B1F-F113-41FC-907D-CE65A1E2BA41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80C29B1F-F113-41FC-907D-CE65A1E2BA41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AF86B23-8763-4897-9B9F-B1E424888239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AF86B23-8763-4897-9B9F-B1E424888239}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AF86B23-8763-4897-9B9F-B1E424888239}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AF86B23-8763-4897-9B9F-B1E424888239}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFB87377-C560-4448-8B4A-0D018A90B68B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFB87377-C560-4448-8B4A-0D018A90B68B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFB87377-C560-4448-8B4A-0D018A90B68B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFB87377-C560-4448-8B4A-0D018A90B68B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{80C29B1F-F113-41FC-907D-CE65A1E2BA41} = {89BF7302-F179-4A46-BCB4-E65C9985EFFA}
+		{1AF86B23-8763-4897-9B9F-B1E424888239} = {89BF7302-F179-4A46-BCB4-E65C9985EFFA}
+		{AFB87377-C560-4448-8B4A-0D018A90B68B} = {711701E4-E2BD-4771-9E8C-8E0943BF3756}
+	EndGlobalSection
+EndGlobal

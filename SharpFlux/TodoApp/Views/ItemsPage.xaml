@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TodoApp.Views.ItemsPage"
+             Title="{Binding Title}"
+             xmlns:localControls="clr-namespace:TodoApp.Controls"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Name="BrowseItemsPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{Binding AddItemCommand}" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <localControls:SelectedItemClearedListView x:Name="ItemsListView" 
+                                                      ItemsSource="{Binding Items}"
+                                                      VerticalOptions="FillAndExpand"
+                                                      ItemSelectedCommand="{Binding ShowItemDetailCommand}"
+                                                      HasUnevenRows="true"
+                                                      RefreshCommand="{Binding LoadItemsCommand}"
+                                                      IsPullToRefreshEnabled="true"
+                                                      IsRefreshing="{Binding IsBusy, Mode=OneWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem Text="Delete"
+                                            IsDestructive="True" 
+                                            Command="{Binding Source={x:Reference ItemsListView}, Path=BindingContext.DeleteCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                <MenuItem Text="Complete"
+                                            IsDestructive="false" 
+                                            Command="{Binding Source={x:Reference ItemsListView}, Path=BindingContext.CompleteCommand}"
+                                            CommandParameter="{Binding .}"/>
+                            </ViewCell.ContextActions>
+                            <StackLayout Padding="10">
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding Text}" 
+                                            LineBreakMode="NoWrap" 
+                                            Style="{DynamicResource ListItemTextStyle}" 
+                                            FontSize="16" />
+                                    <Label Text="{Binding IsComplete, StringFormat='Is complete: {0}'}"
+                                           Style="{DynamicResource ListItemTextStyle}" 
+                                           FontSize="16" />
+                                </StackLayout>
+                                <Label Text="{Binding Description}" 
+                                       LineBreakMode="NoWrap"
+                                       Style="{DynamicResource ListItemDetailTextStyle}"
+                                       FontSize="13" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </localControls:SelectedItemClearedListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
