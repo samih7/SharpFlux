@@ -3,6 +3,8 @@ using System.Linq;
 using TodoApp.Flux.Actions;
 using TodoApp.Models;
 using SharpFlux;
+using SharpFlux.Stores;
+using SharpFlux.Dispatching;
 
 namespace TodoApp.Flux.Stores
 {
@@ -14,7 +16,7 @@ namespace TodoApp.Flux.Stores
         //{
         //    this.otherStore = otherStore;
         //}
-        public ItemStore(Dispatcher dispatcher) : base(dispatcher, new List<Item>()) 
+        public ItemStore(IDispatcher dispatcher) : base(dispatcher, new List<Item>()) 
         {
         }
 

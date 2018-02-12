@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using SharpFlux.Dispatching;
 
-namespace SharpFlux
+namespace SharpFlux.Stores
 {
-    public abstract class Store<TPayload, TData>
+    public abstract class Store<TPayload, TData> : IStore<TData>
     {
         private readonly object syncRoot = new object();
-        private readonly Dispatcher dispatcher;
-        public event EventHandler OnStateChanged;
+        private readonly IDispatcher dispatcher;
+        public event EventHandler OnChanged;
 
         //Property that stores mutate and that is exposed to ViewModels for them to update 
-        public TData Data { get; }
+        public TData Data { get; protected set; }
 
         //Returns the dispatch token that the dispatcher recognizes this store by
         //Can be used to WaitFor() this store
@@ -18,12 +20,28 @@ namespace SharpFlux
         //Returns whether the store has changed during the most recent dispatch
         public bool HasChanged { get; set; }
 
-        protected Store(Dispatcher dispatcher, TData initData)
+        protected Store(IDispatcher dispatcher, TData initData)
         {
             this.dispatcher = dispatcher;
             Data = initData;
 
-            DispatchToken = this.dispatcher.Register<TPayload>(InvokeOnDispatch);
+            DispatchToken = Subscribe();
+        }
+
+        //Dispatcher-forwarded methods so the API users do not have to care about the Dispatcher
+        protected string Subscribe()
+        {
+            return dispatcher.Register<TPayload>(InvokeOnDispatch);
+        }
+
+        protected void Unsubscribe(string dispatchToken)
+        {
+            dispatcher.Unregister(dispatchToken);
+        }
+
+        protected void WaitFor(IEnumerable<string> dispatchTokens)
+        {
+            dispatcher.WaitFor<TPayload>(dispatchTokens);
         }
 
         //This is the store's registered callback method and all the logic that will be executed is contained here
@@ -39,31 +57,22 @@ namespace SharpFlux
 
             //If a change is emitted (store implementation has called 'EmitChange'), we notify our ViewModels that subscribed
             //They will update the View through our getters (Data)
-            if (HasChanged)
-                OnStateChanged?.Invoke(this, EventArgs.Empty);
-        }
+            if (!HasChanged)
+                return;
 
-        protected void EmitChange()
-        {
-            if (!dispatcher.IsDispatching)
-                throw new InvalidOperationException("Must be invoked while dispatching.");
-            HasChanged = true;
+            OnChanged?.Invoke(this, EventArgs.Empty);
         }
-
         //The callback that will be registered with the dispatcher during instanciation.
         //Subclasses must override this method.
         //This callback is the only way the store receives new data.
         protected abstract void OnDispatch(TPayload payload);
 
-        //Dispatcher-forwarded methods so the API users do not have to care about the Dispatcher
-        protected void Unsubscribe()
+        protected void EmitChange()
         {
-            dispatcher.Unregister(DispatchToken);
-        }
-
-        protected void WaitFor(string[] dispatchTokens)
-        {
-            dispatcher.WaitFor<TPayload>(dispatchTokens);
+            if (!dispatcher.IsDispatching)
+                throw new InvalidOperationException("Must be invoked while dispatching.");
+            
+            HasChanged = true;
         }
     }
 }

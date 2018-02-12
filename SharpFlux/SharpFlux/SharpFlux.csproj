@@ -2,10 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageId>SharpFlux</PackageId>
-    <PackageVersion>1.0</PackageVersion>
-    <Authors>Samih Alkeilani</Authors>
-    <Description>Flux architecture implemented in C#</Description>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -15,4 +11,8 @@
     <NoStdLib>true</NoStdLib>
     <DebugType></DebugType>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Dispatching\" />
+    <Folder Include="Stores\" />
+  </ItemGroup>
 </Project>

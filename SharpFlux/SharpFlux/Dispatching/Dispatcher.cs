@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
-namespace SharpFlux
+namespace SharpFlux.Dispatching
 {
-    public class Dispatcher
+    public class Dispatcher : IDispatcher
     {
         private readonly IDictionary<string, object> callbacks = new Dictionary<string, object>();
         private readonly IDictionary<string, bool> isHandledCallbacks = new Dictionary<string, bool>(); 
@@ -78,25 +77,22 @@ namespace SharpFlux
             IsDispatching = false;
         }
 
-        //Waits for the callbacks specified to be invoked before continuing execution
-        //of the current callback.This method should only be used by a callback in
-        //response to a dispatched payload.
-        public void WaitFor<TPayload>(string[] storesDispatchTokens)
+        public void WaitFor<TPayload>(IEnumerable<string> dispatchTokens)
         {
             if (!IsDispatching)
                 throw new InvalidOperationException("Must be handled when dispatching");
             
-            foreach (var storeToken in storesDispatchTokens)
+            foreach (var token in dispatchTokens)
             {
-                if (isPendingCallbacks[storeToken])
+                if (isPendingCallbacks[token])
                 {
-                    if (!isHandledCallbacks[storeToken])
-                        throw new InvalidOperationException($"Dispatcher WaitFor: circular dependency detected while waiting for {storeToken}");
+                    if (!isHandledCallbacks[token]) //Store with this token is also waiting for us... Not allowed.
+                        throw new InvalidOperationException($"Dispatcher WaitFor: circular dependency detected while waiting for {token}");
 
                     continue;
                 }
 
-                InvokeCallback<TPayload>(storeToken);
+                InvokeCallback<TPayload>(token);
             }
         }
 

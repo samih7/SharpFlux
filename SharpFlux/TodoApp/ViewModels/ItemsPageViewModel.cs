@@ -160,13 +160,13 @@ namespace TodoApp.ViewModels
         private void Subscribe()
         {
             //itemStore.OnStateChanged += ItemStore_OnChange;
-            App.ItemStore.OnStateChanged += ItemStore_OnChange;
+            App.ItemStore.OnChanged += ItemStore_OnChange;
         }
 
         private void Unsubscribe()
         {
             //itemStore.OnStateChanged -= ItemStore_OnChange; 
-            App.ItemStore.OnStateChanged -= ItemStore_OnChange;
+            App.ItemStore.OnChanged -= ItemStore_OnChange;
         }
 
         //Reflecting changes from our stpre to our view

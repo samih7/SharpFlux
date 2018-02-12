@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
+using SharpFlux;
 using TodoApp.Models;
 using TodoApp.Services.Items;
-using SharpFlux;
 
 namespace TodoApp.Flux.Actions
 {
