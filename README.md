@@ -6,6 +6,3 @@ Inspired by [Facebook Flux](https://github.com/facebook/flux/).
 
 ## Samples
 [Xamarin.Forms TodoApp](https://github.com/samih7/SharpFlux/tree/master/SharpFlux/TodoApp) (used alongside MVVM design pattern)
-
-## NuGet package
-`SharpFlux` [![NuGet](https://img.shields.io/nuget/v/SharpFlux.svg)](https://www.nuget.org/packages/SharpFlux/)
