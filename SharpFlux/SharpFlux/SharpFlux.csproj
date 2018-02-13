@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>SharpFlux</PackageId>
+    <PackageVersion>1.0.0</PackageVersion>
+    <Authors>Samih Alkeilani</Authors>
+    <PackageLicenseUrl>https://github.com/samih7/SharpFlux/blob/master/LICENSE</PackageLicenseUrl>
+    <Owners>samih</Owners>
+    <PackageProjectUrl>https://github.com/samih7/SharpFlux</PackageProjectUrl>
+    <Description>Enabling a Flux Architecture in .NET applications</Description>
+    <PackageTags>flux flux-architecture .net c#</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -14,5 +22,8 @@
   <ItemGroup>
     <Folder Include="Dispatching\" />
     <Folder Include="Stores\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NuGet.Build.Packaging" Version="0.2.0" />
   </ItemGroup>
 </Project>
