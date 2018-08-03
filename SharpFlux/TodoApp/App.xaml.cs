@@ -4,9 +4,6 @@ using TodoApp.Views;
 using Prism.Ioc;
 using Prism.Unity;
 using SharpFlux.Dispatching;
-using SharpFlux.Stores;
-using TodoApp.Models;
-using System.Collections.Generic;
 
 namespace TodoApp
 {
@@ -17,12 +14,11 @@ namespace TodoApp
         private static IDispatcher dispatcher = null;
         public static IDispatcher Dispatcher => dispatcher ?? (dispatcher = new Dispatcher());
 
-        private static IStore<IList<Item>> itemStore = null;
-        public static IStore<IList<Item>> ItemStore => itemStore ?? (itemStore = new ItemStore(Dispatcher));
+        private static ItemStore itemStore = null;
+        public static ItemStore ItemStore => itemStore ?? (itemStore = new ItemStore(Dispatcher));
 
-        private static IStore<IList<Item>> otherStore = null;
-        public static IStore<IList<Item>> OtherStore => otherStore ?? (otherStore = new OtherStore(Dispatcher));
-
+        private static OtherStore otherStore = null;
+        public static OtherStore OtherStore => otherStore ?? (otherStore = new OtherStore(Dispatcher));
         protected override async void OnInitialized()
         {
             InitializeComponent();

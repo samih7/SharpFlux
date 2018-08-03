@@ -30,12 +30,12 @@ namespace TodoApp.Flux.Actions
                 await itemService.AddAsync(item);
 
                 //Dispatching payload
-                //dispatcher.Dispatch(new Payload<ItemActionTypes>(ItemActionTypes.AddItem, item));
-                App.Dispatcher.Dispatch(new Payload<ItemActionTypes>(ItemActionTypes.AddItem, item));
+                //dispatcher.Dispatch(new Payload<ActionTypes>(ActionTypes.UpsertItem, item));
+                App.Dispatcher.Dispatch(Payload<ActionTypes>.From(ActionTypes.UpsertItem, item));
             }
             catch (System.Exception ex)
             {
-                App.Dispatcher.Dispatch(new Payload<ItemActionTypes>(ItemActionTypes.Failure, ex.Message));
+                App.Dispatcher.Dispatch(Payload<ActionTypes>.From(ActionTypes.Failure, ex.Message));
             }
         }
 
@@ -44,12 +44,12 @@ namespace TodoApp.Flux.Actions
             try
             {
                 await itemService.RemoveAsync(item);
-                //dispatcher.Dispatch(new Payload<ItemActionTypes>(ItemActionTypes.RemoveItem, item));
-                App.Dispatcher.Dispatch(new Payload<ItemActionTypes>(ItemActionTypes.RemoveItem, item));
+                //dispatcher.Dispatch(new Payload<ActionTypes>(ActionTypes.RemoveItem, item));
+                App.Dispatcher.Dispatch(Payload<ActionTypes>.From(ActionTypes.RemoveItem, item));
             }
             catch (System.Exception ex)
             {
-                App.Dispatcher.Dispatch(new Payload<ItemActionTypes>(ItemActionTypes.Failure, ex.Message));
+                App.Dispatcher.Dispatch(Payload<ActionTypes>.From(ActionTypes.Failure, ex.Message));
             }
         }
 
@@ -58,12 +58,12 @@ namespace TodoApp.Flux.Actions
             try
             {
                 await itemService.CompleteAsync(item);
-                //dispatcher.Dispatch(new Payload<ItemActionTypes>(ItemActionTypes.CompleteItem, item));
-                App.Dispatcher.Dispatch(new Payload<ItemActionTypes>(ItemActionTypes.CompleteItem, item));
+                //dispatcher.Dispatch(new Payload<ActionTypes>(ActionTypes.UpsertItem, item));
+                App.Dispatcher.Dispatch(Payload<ActionTypes>.From(ActionTypes.UpsertItem, item));
             }
             catch (System.Exception ex)
             {
-                App.Dispatcher.Dispatch(new Payload<ItemActionTypes>(ItemActionTypes.Failure, ex.Message));
+                App.Dispatcher.Dispatch(Payload<ActionTypes>.From(ActionTypes.Failure, ex.Message));
             }
         }
 
@@ -73,22 +73,13 @@ namespace TodoApp.Flux.Actions
             {
                 var items = await itemService.GetItemsAsync();
 
-                //dispatcher.Dispatch(new Payload<ItemActionTypes>(ItemActionTypes.GetItems, items));
-                App.Dispatcher.Dispatch(new Payload<ItemActionTypes>(ItemActionTypes.GetItems, items));
+                //dispatcher.Dispatch(new Payload<ActionTypes>(ActionTypes.GetItems, items));
+                App.Dispatcher.Dispatch(Payload<ActionTypes>.From(ActionTypes.GetItems, items));
             }
             catch (System.Exception ex)
             {
-                App.Dispatcher.Dispatch(new Payload<ItemActionTypes>(ItemActionTypes.Failure, ex.Message));
+                App.Dispatcher.Dispatch(Payload<ActionTypes>.From(ActionTypes.Failure, ex.Message));
             }
         }
-    }
-
-    public enum ItemActionTypes
-    {
-        AddItem,
-        CompleteItem,
-        GetItems,
-        RemoveItem,
-        Failure
     }
 }

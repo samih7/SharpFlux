@@ -7,6 +7,10 @@ using TodoApp.Flux.Actions;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services;
+using SharpFlux;
+using TodoApp.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TodoApp.ViewModels
 {
@@ -159,24 +163,56 @@ namespace TodoApp.ViewModels
 
         private void Subscribe()
         {
-            //itemStore.OnStateChanged += ItemStore_OnChange;
-            App.ItemStore.OnChanged += ItemStore_OnChange;
+            App.ItemStore.ItemUpserted += ItemStore_ItemUpserted;
+            App.ItemStore.ItemRemoved += ItemStore_ItemRemoved;
+            App.ItemStore.ItemsFetched += ItemStore_ItemsFetched;
         }
 
         private void Unsubscribe()
         {
-            //itemStore.OnStateChanged -= ItemStore_OnChange; 
-            App.ItemStore.OnChanged -= ItemStore_OnChange;
+            App.ItemStore.ItemUpserted -= ItemStore_ItemUpserted;
+            App.ItemStore.ItemRemoved -= ItemStore_ItemRemoved;
+            App.ItemStore.ItemsFetched -= ItemStore_ItemsFetched;
         }
 
         //Reflecting changes from our stpre to our view
-        public void ItemStore_OnChange(object sender, EventArgs e)
+        public void ItemStore_ItemUpserted(object sender, EventArgs e)
         {
-            Debug.WriteLine("Something has changed ! It will be rendered now !");
+            var item = (e as DataEventArgs<Item>)?.Data;
+            if (item == null)
+                return;
+            var existingItem = Items.FirstOrDefault(t => t.Id == item.Id);
+            if (existingItem == null)
+            {
+                Items.Add(new ItemViewModel(item));
+                return;
+            }
+            var itemIndex = Items.IndexOf(existingItem);
+
+            Items.RemoveAt(itemIndex);
+            Items.Insert(itemIndex, new ItemViewModel(item));
+        }
+        public void ItemStore_ItemRemoved(object sender, EventArgs e)
+        {
+            var item = (e as DataEventArgs<Item>)?.Data;
+            if (item == null)
+                return;
+            var existingItem = Items.FirstOrDefault(t => t.Id == item.Id);
+            if (existingItem == null)
+                return;
+            Items.Remove(existingItem);
+        }
+        public void ItemStore_ItemsFetched(object sender, EventArgs e)
+        {
+            var itemsFetched = (e as DataEventArgs<IList<Item>>)?.Data;
+            if (itemsFetched == null)
+                return;
 
             Items.Clear();
-            foreach (var item in App.ItemStore.Data)
+            foreach (var item in itemsFetched)
+            {
                 Items.Add(new ItemViewModel(item));
+            }
         }
     }
 }

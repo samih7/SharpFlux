@@ -8,7 +8,6 @@ namespace SharpFlux.Stores
     {
         private readonly object syncRoot = new object();
         private readonly IDispatcher dispatcher;
-        public event EventHandler OnChanged;
 
         //Property that stores mutate and that is exposed to ViewModels for them to update 
         public TData Data { get; protected set; }
@@ -18,7 +17,16 @@ namespace SharpFlux.Stores
         public string DispatchToken { get; private set; }
 
         //Returns whether the store has changed during the most recent dispatch
-        public bool HasChanged { get; set; }
+        private bool hasChanged;
+        public bool HasChanged {
+            get { return hasChanged; }
+            set 
+            {
+                if (!dispatcher.IsDispatching)
+                    throw new InvalidOperationException("Must be invoked while dispatching.");
+                hasChanged = value;
+            }
+        }
 
         protected Store(IDispatcher dispatcher, TData initData)
         {
@@ -54,25 +62,10 @@ namespace SharpFlux.Stores
             {
                 OnDispatch(payload);
             }
-
-            //If a change is emitted (store implementation has called 'EmitChange'), we notify our ViewModels that subscribed
-            //They will update the View through our getters (Data)
-            if (!HasChanged)
-                return;
-
-            OnChanged?.Invoke(this, EventArgs.Empty);
         }
         //The callback that will be registered with the dispatcher during instanciation.
         //Subclasses must override this method.
         //This callback is the only way the store receives new data.
         protected abstract void OnDispatch(TPayload payload);
-
-        protected void EmitChange()
-        {
-            if (!dispatcher.IsDispatching)
-                throw new InvalidOperationException("Must be invoked while dispatching.");
-            
-            HasChanged = true;
-        }
     }
 }
