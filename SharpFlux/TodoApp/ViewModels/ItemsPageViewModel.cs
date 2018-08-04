@@ -16,10 +16,6 @@ namespace TodoApp.ViewModels
 {
     public class ItemsPageViewModel : BaseViewModel, INavigationAware
     {
-        //Prism without Flux
-        //private readonly IEventAggregator eventAggregator;
-        //private readonly IItemService itemService;
-
         private readonly INavigationService navigationService;
         private readonly IPageDialogService dialogService;
         private readonly ItemActionsCreator itemActionsCreator;
@@ -61,19 +57,11 @@ namespace TodoApp.ViewModels
             await navigationService.NavigateAsync("ItemDetailPage", new NavigationParameters { { "item", item } }, false, true);
         }));
 
-        public ItemsPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IDependencyService dependencyService,
-                                  //Prism without Flux
-                                  //IEventAggregator eventAggregator,
-                                  //IItemService itemService,
-
+        public ItemsPageViewModel(INavigationService navigationService, IPageDialogService dialogService,
                                   //Commented for testing purposes
                                   //ItemStore itemStore,
                                   ItemActionsCreator itemActionsCreator)
         {   
-            //Prism without Flux 
-            //this.eventAggregator = eventAggregator;
-            //this.itemService = itemService;
-
             //Commented for testing purposes
             //this.itemStore = itemStore;
 
@@ -84,13 +72,6 @@ namespace TodoApp.ViewModels
             Items = new ObservableCollection<ItemViewModel>();
 
             Title = "Browse";
-
-            //Prism without Flux 
-            //eventAggregator.GetEvent<AddItemEvent>().Subscribe(async () => 
-            //{ 
-            //    await LoadItemsAsync();
-            //});
-            //Items = new ObservableCollection<Item>();
         }
 
         //Actions can also come from system events
@@ -113,14 +94,6 @@ namespace TodoApp.ViewModels
             try
             {
                 await itemActionsCreator.GetItemsAsync();
-
-                //Prism without Flux
-                // Items.Clear();
-                //        var items = await itemService.GetItemsAsync(true);
-                //        foreach (var item in items)
-                //        {
-                //            Items.Add(item);
-                //        }
             }
             catch (Exception ex)
             {
@@ -204,15 +177,7 @@ namespace TodoApp.ViewModels
         }
         public void ItemStore_ItemsFetched(object sender, EventArgs e)
         {
-            var itemsFetched = (e as DataEventArgs<IList<Item>>)?.Data;
-            if (itemsFetched == null)
-                return;
-
-            Items.Clear();
-            foreach (var item in itemsFetched)
-            {
-                Items.Add(new ItemViewModel(item));
-            }
+            Items = new ObservableCollection<ItemViewModel>(App.ItemStore.Data.Select(x => new ItemViewModel(x)));
         }
     }
 }
