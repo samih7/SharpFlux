@@ -22,7 +22,13 @@ namespace TodoApp.ViewModels
         //Commented for testing purposes
         //private readonly ItemStore itemStore;
 
-        public ObservableCollection<ItemViewModel> Items { get; set; }
+        private ObservableCollection<ItemViewModel> items;
+        public ObservableCollection<ItemViewModel> Items
+        {
+            get { return items; }
+            set { SetProperty(ref items, value); }
+        }
+
 
         private DelegateCommand loadItemsCommand;
         public ICommand LoadItemsCommand => loadItemsCommand ?? (loadItemsCommand = new DelegateCommand(async () =>
