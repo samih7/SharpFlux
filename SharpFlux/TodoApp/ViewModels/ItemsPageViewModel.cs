@@ -183,7 +183,9 @@ namespace TodoApp.ViewModels
         }
         public void ItemStore_ItemsFetched(object sender, EventArgs e)
         {
-            Items = new ObservableCollection<ItemViewModel>(App.ItemStore.Data.Select(x => new ItemViewModel(x)));
+            Items.Clear();
+            foreach (var item in App.ItemStore.Data.Select(x => new ItemViewModel(x)))
+                Items.Add(item);
         }
     }
 }

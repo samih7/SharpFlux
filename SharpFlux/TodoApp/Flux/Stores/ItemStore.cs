@@ -67,7 +67,7 @@ namespace TodoApp.Flux.Stores
                     Data.Remove(toRemoveItem);
 
                     HasChanged = true;
-                    ItemRemoved?.Invoke(this, EventArgs.Empty);
+                    ItemRemoved?.Invoke(this, DataEventArgs<Item>.From(toRemoveItem));
                     break;
                 case ActionTypes.Failure:
                     break;
